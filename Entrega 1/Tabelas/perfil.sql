@@ -1,6 +1,6 @@
 CREATE TABLE Perfil (
 
-  email VARCHAR2(255) NOT NULL,
+  email VARCHAR2(60) NOT NULL,
   nome VARCHAR2(255) NOT NULL,
   sobrenome VARCHAR2(255) NOT NULL,
   data_nascimento DATE NOT NULL,

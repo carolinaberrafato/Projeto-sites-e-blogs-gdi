@@ -1,6 +1,6 @@
 CREATE TABLE Usuario (
 
-  email_usuario VARCHAR2(255) NOT NULL,
+  email_usuario VARCHAR2(60) NOT NULL,
   data_assinatura DATE NOT NULL,
   numero_postagens INT,
 
