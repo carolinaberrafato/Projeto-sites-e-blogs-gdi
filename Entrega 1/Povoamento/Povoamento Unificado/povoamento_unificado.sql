@@ -61,9 +61,9 @@ INSERT INTO Resposta (id_comentario, id_resposta, data_publicacao, mensagem) VAL
 
 -- Usuario_Postagem:
 
-INSERT INTO Usuario_Postagem(usuario, postagem) VALUES ('silvio@cin.ufpe.br', 1);
-INSERT INTO Usuario_Postagem(usuario, postagem) VALUES ('valeria@cin.ufpe.br', 2);
-INSERT INTO Usuario_Postagem(usuario, postagem) VALUES ('ruy@cin.ufpe.br', 3);
+INSERT INTO Usuario_Postagem(usuario, postagem, moderador) VALUES ('silvio@cin.ufpe.br', 1, 'nivan@cin.ufpe.br');
+INSERT INTO Usuario_Postagem(usuario, postagem, moderador) VALUES ('valeria@cin.ufpe.br', 2, 'alex@cin.ufpe.br');
+INSERT INTO Usuario_Postagem(usuario, postagem, moderador) VALUES ('ruy@cin.ufpe.br', 3, 'valeria@cin.ufpe.br');
 
 
 -- Acompanha:
@@ -74,11 +74,6 @@ INSERT INTO Acompanha(topico_associado, usuario_associado, data_inicial, data_fi
 INSERT INTO Acompanha(topico_associado, usuario_associado, data_inicial, data_final) VALUES ('Ciência e Tecnologia', 'silvio@cin.ufpe.br', to_date('06/01/2018', 'dd/mm/yy'), NULL);
 INSERT INTO Acompanha(topico_associado, usuario_associado, data_inicial, data_final) VALUES ('Ciência e Tecnologia', 'ruy@cin.ufpe.br', to_date('06/01/2009', 'dd/mm/yy'), NULL);
 INSERT INTO Acompanha(topico_associado, usuario_associado, data_inicial, data_final) VALUES ('Política', 'ruy@cin.ufpe.br', to_date('06/01/2009', 'dd/mm/yy'), to_date('07/10/2010', 'dd/mm/yy'));
-
-
--- Gerencia..?
-
-
 
 
 -- Segue:
