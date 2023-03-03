@@ -1,6 +1,6 @@
 CREATE TABLE Associa2 (
 
-  postagem VARCHAR2(10),
+  postagem NUMBER,
   topico VARCHAR2(60),
 
   CONSTRAINT associa2_pk PRIMARY KEY (postagem, topico),

@@ -1,6 +1,8 @@
+CREATE SEQUENCE post_seq START WITH 1 INCREMENT BY 1;
+
 CREATE TABLE Postagem (
 
-  id VARCHAR2(10) NOT NULL,
+  id NUMBER DEFAULT post_seq.NEXTVAL, 
   usuario_associado VARCHAR2(60) NOT NULL,
   titulo_da_postagem VARCHAR2(60) NOT NULL,
   data_publicacao DATE NOT NULL,

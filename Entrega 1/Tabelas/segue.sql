@@ -5,6 +5,7 @@ CREATE TABLE Segue (
 
   CONSTRAINT segue_pk PRIMARY KEY (seguidor, seguido),
   CONSTRAINT segue_fk1 FOREIGN KEY (seguidor) REFERENCES Usuario(email_usuario),
-  CONSTRAINT segue_fk2 FOREIGN KEY (seguido) REFERENCES Usuario(email_usuario)
+  CONSTRAINT segue_fk2 FOREIGN KEY (seguido) REFERENCES Usuario(email_usuario),
+  CONSTRAINT segue_check CHECK (seguidor <> seguido)
 
 );
