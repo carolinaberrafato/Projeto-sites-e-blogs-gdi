@@ -12,9 +12,11 @@ MODIFY COLUMN num_telefone VARCHAR2(14);
 
 
 
--- UPDATE -------------------------
-
-
+-- UPDATE ------------------------- [OK]
+-- Atualiza a mensagem de um comentário já existente.
+UPDATE comentario
+SET mensagem = 'Achei muito bom'
+WHERE id = '2';
 
 -- DELETE -------------------------
 
@@ -24,8 +26,10 @@ MODIFY COLUMN num_telefone VARCHAR2(14);
 
 
 
--- BETWEEN -------------------------
-
+-- BETWEEN ------------------------- [OK]
+-- Seleciona o título da postagem e a data de publicação das postagens feitas em 2022 e 2023
+SELECT titulo_da_postagem, data_publicacao FROM Postagem
+WHERE data_publicacao BETWEEN '01-JAN-22' AND '31-DEC-23';
 
 
 -- IN -------------------------
@@ -44,9 +48,11 @@ FROM Acompanha A
 WHERE A.topico_associado = 'Ciência e Tecnologia'
 AND A.data_final IS NULL;
 
--- INNER JOIN -------------------------
-
-
+-- INNER JOIN ------------------------- [OK]
+-- Seleciona os usuários que possuem alguma postagem publicada, bem como o título da postagem
+SELECT pf.nome, pt.titulo_da_postagem FROM Usuario_Postagem up
+INNER JOIN Perfil pf ON pf.email = up.usuario
+INNER JOIN Postagem pt ON pt.usuario_associado = pf.email;
 
 -- MAX ------------------------- [OK]
 
@@ -65,8 +71,12 @@ FROM Usuario;
 
 
 
--- COUNT -------------------------
-
+-- COUNT ------------------------- [OK]
+-- Seleciona o nome do tópico e conta quantas postagens tem em cada tópico
+SELECT t.nome_do_topico, COUNT(*) FROM Topico t
+RIGHT OUTER JOIN associa2 a ON t.nome_do_topico = a.topico
+RIGHT OUTER JOIN postagem p ON a.postagem = p.id
+GROUP BY t.nome_do_topico;
 
 
 -- LEFT ou RIGHT ou FULL OUTER JOIN -------------------------
