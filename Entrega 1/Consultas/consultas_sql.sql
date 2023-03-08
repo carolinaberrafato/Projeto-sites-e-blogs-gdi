@@ -72,7 +72,7 @@ FROM Usuario;
 
 
 -- COUNT ------------------------- [OK]
--- Seleciona o nome do tópico e conta quantas postagens tem em cada tópico
+-- Seleciona o título do tópico e conta quantas postagens tem em cada tópico
 SELECT t.nome_do_topico, COUNT(*) FROM Topico t
 RIGHT OUTER JOIN associa2 a ON t.nome_do_topico = a.topico
 RIGHT OUTER JOIN postagem p ON a.postagem = p.id
@@ -80,7 +80,10 @@ GROUP BY t.nome_do_topico;
 
 
 -- LEFT ou RIGHT ou FULL OUTER JOIN -------------------------
-
+-- Seleciona os moderadores que estão associado a cada postagem e mostra também os perfis que não moderam nenhuma postagem
+SELECT pf.nome AS moderador, pt.titulo_da_postagem FROM Usuario_Postagem up
+FULL OUTER JOIN Perfil pf on up.moderador = pf.email
+FULL OUTER JOIN Postagem pt ON up.postagem = pt.id;
 
 
 -- SUBCONSULTA COM OPERADOR RELACIONAL -------------------------
