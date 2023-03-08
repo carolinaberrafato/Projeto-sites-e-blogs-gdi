@@ -5,6 +5,12 @@ ALTER TABLE Telefone
 MODIFY COLUMN num_telefone VARCHAR2(14);
 
 -- CREATE INDEX -------------------------
+-- criar um índice na coluna "seguidor" da tabela "Segue" para acelerar a busca de todos os seguidores de um usuário específico
+CREATE INDEX idx_seguidor ON Segue (seguidor);
+SELECT seguidor
+FROM Segue
+WHERE seguido = 'nivan@cin.ufpe.br'
+ORDER BY seguidor;
 
 
 
@@ -23,7 +29,14 @@ WHERE id = '2';
 
 
 -- SELECT-FROM-WHERE -------------------------
+-- encontrar o email do usuário que possui o maior número de postagens e o título da sua última postagem
 
+SELECT u.email_usuario, p.titulo_da_postagem
+FROM Usuario u
+JOIN Postagem p ON u.email_usuario = p.usuario_associado
+WHERE u.numero_postagens = (SELECT MAX(numero_postagens) FROM Usuario)
+ORDER BY p.data_publicacao DESC
+FETCH FIRST 1 ROW ONLY;
 
 
 -- BETWEEN ------------------------- [OK]
@@ -68,7 +81,11 @@ SELECT MIN(numero_postagens)
 FROM Usuario;
 
 -- AVG -------------------------
-
+-- calcular a média de postagens dos usuários que são seguidos por outros usuários
+SELECT AVG(u.numero_postagens)
+FROM Usuario u
+JOIN Segue s ON u.email_usuario = s.seguido
+WHERE u.numero_postagens IS NOT NULL;
 
 
 -- COUNT ------------------------- [OK]
@@ -95,6 +112,15 @@ FULL OUTER JOIN Postagem pt ON up.postagem = pt.id;
 
 
 -- SUBCONSULTA COM ANY -------------------------
+-- filtrar os usuários que assinaram antes de 2020 e têm pelo menos um seguidor
+SELECT *
+FROM Usuario
+WHERE data_assinatura < to_date('01/01/2020', 'dd/mm/yyyy')
+AND email_usuario IN (
+  SELECT seguido
+  FROM Segue
+  WHERE seguido IS NOT NULL
+)
 
 
 
