@@ -109,7 +109,32 @@ BEGIN
 END;
 
 
--- WHILE LOOP -------------------------
+-- WHILE LOOP ------------------------- [OK]
+-- Mostra quantos usuários cada moderador já baniu, e incrementa o valor total de contas banidas a cada iteração do while loop.
+DECLARE
+   total INTEGER := 0;
+   email moderador.email_moderador%TYPE;
+   banidas moderador.num_contas_banidas%TYPE;
+BEGIN
+  SELECT email_moderador, num_contas_banidas INTO email, banidas FROM moderador 
+  ORDER BY email_moderador
+  FETCH FIRST 1 ROWS ONLY;
+   
+  WHILE email IS NOT NULL LOOP
+    dbms_output.put_line('Usuário [' || email || '] baniu ' || banidas ||' contas');
+    total := total + banidas;
+    
+    BEGIN
+        SELECT email_moderador, num_contas_banidas INTO email, banidas FROM moderador WHERE email_moderador > email ORDER BY email_moderador FETCH FIRST 1 ROWS ONLY;
+    EXCEPTION
+        WHEN NO_DATA_FOUND THEN
+          email := NULL;
+          banidas := NULL;
+    END;
+   END LOOP;
+   
+   dbms_output.put_line('Número total de contas banidas: ' || total);
+END;
 
 
 
