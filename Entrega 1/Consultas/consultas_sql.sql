@@ -46,11 +46,15 @@ WHERE data_publicacao BETWEEN '01-JAN-22' AND '31-DEC-23';
 
 
 -- IN -------------------------
-
+-- Seleciona o email e o nome dos usuários cujos nomes são Silvio, Nivan ou João
+SELECT email, nome FROM Perfil
+WHERE nome IN ('Silvio', 'Nivan', 'Joao');
 
 
 -- LIKE -------------------------
-
+-- Seleciona o email e o nome dos usuários cujos nomes possuem a letra "a" no meio do nome
+SELECT email, nome FROM Perfil
+WHERE nome LIKE '%a%';
 
 
 -- IS NULL ou IS NOT NULL ------------------------- [OK]
@@ -104,11 +108,21 @@ FULL OUTER JOIN Postagem pt ON up.postagem = pt.id;
 
 
 -- SUBCONSULTA COM OPERADOR RELACIONAL -------------------------
-
+-- Seleciona os usuários que têm data de assinatura anterior à data de assinatura do usuário Silvio
+SELECT * FROM Usuario
+WHERE data_assinatura < 
+  (SELECT data_assinatura 
+  FROM Usuario 
+  WHERE email_usuario = 'silvio@cin.ufpe.br');
 
 
 -- SUBCONSULTA COM IN -------------------------
-
+-- Seleciona os usuários que são seguidos por Silvio
+SELECT * FROM Usuario
+WHERE email_usuario IN 
+  (SELECT seguido 
+  FROM Segue 
+  WHERE seguidor = 'silvio@cin.ufpe.br');
 
 
 -- SUBCONSULTA COM ANY -------------------------
@@ -120,9 +134,7 @@ AND email_usuario IN (
   SELECT seguido
   FROM Segue
   WHERE seguido IS NOT NULL
-)
-
-
+);
 
 -- SUBCONSULTA COM ALL -------------------------
 
@@ -144,11 +156,20 @@ FROM Segue
 GROUP BY seguido;
 
 -- HAVING -------------------------
-
+-- Seleciona a quantidade de seguidores de todos os usuários que têm ao menos dois seguidores cadastrados
+SELECT seguido, COUNT(seguidor) AS seguidores
+FROM Segue
+GROUP BY seguido
+HAVING COUNT(seguidor) > 2;
 
 
 -- UNION ou INTERSECT ou MINUS -------------------------
-
+-- Seleciona a data de publicação e a mensagem de todos os comentários e respostas
+SELECT data_publicacao, mensagem 
+FROM Comentario 
+UNION
+SELECT data_publicacao, mensagem
+FROM Resposta;
 
 
 -- CREATE VIEW -------------------------
