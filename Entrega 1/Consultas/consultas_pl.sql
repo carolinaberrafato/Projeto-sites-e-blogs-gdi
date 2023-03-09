@@ -83,8 +83,30 @@ END;
 
 
 
--- LOOP EXIT WHEN -------------------------
+-- LOOP EXIT WHEN ------------------------- [OK]
+-- Lista o nome dos usuários e quais as postagens que eles fizeram
 
+DECLARE
+  v_nome perfil.nome%TYPE;
+  v_titulo_postagem postagem.titulo_da_postagem%TYPE;
+
+CURSOR cursor_postagem IS
+  SELECT pf.nome, pt.titulo_da_postagem
+  FROM perfil pf, postagem pt
+  WHERE pf.email = pt.usuario_associado;
+
+BEGIN
+  OPEN cursor_postagem;
+  LOOP
+    FETCH cursor_postagem into v_nome, v_titulo_postagem;
+    EXIT WHEN cursor_postagem%NOTFOUND;
+    dbms_output.put_line('O usuário '|| TO_CHAR(v_nome)|| ' fez a postagem ' ||TO_CHAR(v_titulo_postagem));
+  END LOOP;
+  CLOSE cursor_postagem;
+  EXCEPTION
+  WHEN INVALID_CURSOR THEN
+    DBMS_OUTPUT.put_line('Erro!');
+END;
 
 
 -- WHILE LOOP -------------------------
