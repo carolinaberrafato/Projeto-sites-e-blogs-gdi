@@ -166,8 +166,19 @@ END;
 
 
 -- USO DE PARÂMETROS (IN, OUT ou IN OUT) -------------------------
-
-
+-- Cria um procedimento para adicionar um perfil novo.
+CREATE OR REPLACE PROCEDURE adicionar_perfil (
+   p_email IN Perfil.email%TYPE,
+   p_nome IN Perfil.nome%TYPE,
+   P_sobrenome IN Perfil.sobrenome%TYPE,
+   p_data_nascimento IN Perfil.data_nascimento%TYPE,
+   p_data_cadastro IN Perfil.data_cadastro%TYPE
+)
+IS
+BEGIN
+   INSERT INTO Perfil(email, nome, sobrenome, data_nascimento, data_cadastro) VALUES (p_email, p_nome, p_sobrenome, p_data_nascimento, p_data_cadastro);
+   COMMIT;
+END adicionar_perfil;
 
 -- CREATE OR REPLACE PACKAGE -------------------------
 
