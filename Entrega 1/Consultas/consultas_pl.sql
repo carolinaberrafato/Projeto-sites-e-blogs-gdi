@@ -154,11 +154,41 @@ END;
 
 
 -- SELECT ... INTO -------------------------
+-- selecionar o título da postagem com ID igual a 2 na tabela "Postagem" e exibindo esse valor
 
+DECLARE
+v_titulo_da_postagem Postagem.titulo_da_postagem%TYPE;
+BEGIN
+SELECT titulo_da_postagem
+INTO v_titulo_da_postagem
+FROM Postagem
+WHERE id = 2;
 
+DBMS_OUTPUT.PUT_LINE('O título da postagem com ID 2 é: ' || v_titulo_da_postagem);
+END;
+/
 
 -- CURSOR (OPEN, FETCH e CLOSE) -------------------------
-
+-- uma lista das postagens da tabela "Postagem", ordenadas por data de publicação em ordem decrescente, exibindo o ID, título e data de cada postagem
+DECLARE
+  CURSOR cur_postagens IS
+    SELECT id, titulo_da_postagem, data_publicacao
+    FROM Postagem
+    ORDER BY data_publicacao DESC;
+    
+  v_id Postagem.id%TYPE;
+  v_titulo Postagem.titulo_da_postagem%TYPE;
+  v_data Postagem.data_publicacao%TYPE;
+BEGIN
+  OPEN cur_postagens;
+  LOOP
+    FETCH cur_postagens INTO v_id, v_titulo, v_data;
+    EXIT WHEN cur_postagens%NOTFOUND;
+    DBMS_OUTPUT.PUT_LINE('ID: ' || v_id || ' - Título: ' || v_titulo || ' - Data: ' || v_data);
+  END LOOP;
+  CLOSE cur_postagens;
+END;
+/
 
 
 -- EXCEPTION WHEN -------------------------
