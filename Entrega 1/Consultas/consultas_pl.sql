@@ -11,11 +11,31 @@
 
 
 -- CREATE PROCEDURE -------------------------
+-- atualizar a data de uma publicação
 
+CREATE OR REPLACE PROCEDURE atualizar_data_publicacao (p_id IN NUMBER, p_data IN DATE)
+AS
+BEGIN
+  UPDATE Postagem SET data_publicacao = p_data WHERE id = p_id;
+  COMMIT;
+END;
+/
+
+EXEC atualizar_data_publicacao(1, to_date('01/01/2023', 'dd/mm/yy'));
 
 
 -- CREATE FUNCTION -------------------------
-
+-- retorna o numero de postagens para cada email
+CREATE OR REPLACE FUNCTION get_post_count (p_usuario_associado IN VARCHAR2)
+RETURN NUMBER
+IS
+  v_post_count NUMBER;
+BEGIN
+  SELECT COUNT(*) INTO v_post_count FROM Postagem WHERE usuario_associado = p_usuario_associado;
+  RETURN v_post_count;
+END;
+/
+SELECT email_usuario, get_post_count(email_usuario) AS num_posts FROM Usuario;
 
 
 -- %TYPE -------------------------
@@ -61,7 +81,20 @@ END;
 /
 
 -- IF ELSIF -------------------------
-
+--verificar se a data fornecida corresponde a alguma das datas de publicação
+DECLARE
+  data_procurada DATE := to_date('12/08/2022', 'dd/mm/yy');
+BEGIN
+  FOR postagem IN (SELECT * FROM Postagem) LOOP
+    IF postagem.data_publicacao = data_procurada THEN
+      DBMS_OUTPUT.PUT_LINE('Postagem encontrada: ' || postagem.titulo_da_postagem);
+    ELSIF postagem.data_publicacao < data_procurada THEN
+      DBMS_OUTPUT.PUT_LINE('Postagem anterior: ' || postagem.titulo_da_postagem);
+    ELSE
+      DBMS_OUTPUT.PUT_LINE('Postagem posterior: ' || postagem.titulo_da_postagem);
+    END IF;
+  END LOOP;
+END;
 
 
 -- CASE WHEN -------------------------
