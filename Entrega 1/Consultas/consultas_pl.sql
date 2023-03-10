@@ -155,7 +155,7 @@ END;
 
 
 
--- LOOP EXIT WHEN ------------------------- [OK]
+-- LOOP EXIT WHEN  e EXCEPTION WHEN ------------------------- [OK]
 -- Lista o nome dos usuários e quais as postagens que eles fizeram
 
 DECLARE
@@ -261,11 +261,6 @@ BEGIN
   CLOSE cur_postagens;
 END;
 /
-
-
--- EXCEPTION WHEN -------------------------
-
-
 
 -- USO DE PARÂMETROS (IN, OUT ou IN OUT) -------------------------
 -- Cria um procedimento para adicionar um perfil novo.
