@@ -14,7 +14,21 @@ END;
 
 
 -- USO DE ESTRUTURA DE DADOS DO TIPO TABLE -------------------------
+-- Faz a cópia do tipo da tabela de Topico.nome_do_topico e printa todos os topicos
+DECLARE
+    TYPE topico_type IS TABLE OF Topico.nome_do_topico%TYPE
+    INDEX BY BINARY_INTEGER;
+    nome_do_topico_table topico_type;
+    i BINARY_INTEGER;
 
+BEGIN
+    i := 0;
+    FOR topicos IN (SELECT nome_do_topico FROM Topico) LOOP
+        nome_do_topico_table(i) := topicos.nome_do_topico;
+        DBMS_OUTPUT.PUT_LINE(nome_do_topico_table(i));
+        i := i + 1;
+    END LOOP;
+END;
 
 
 -- BLOCO ANÔNIMO -------------------------
