@@ -2,7 +2,7 @@
 
 -- Modificando o tamanho máximo da coluna num_telefone para que suporte o código de país no número (sem o "+")
 ALTER TABLE Telefone
-MODIFY COLUMN num_telefone VARCHAR2(14);
+MODIFY num_telefone VARCHAR2(14);
 
 -- CREATE INDEX -------------------------
 -- criar um índice na coluna "seguidor" da tabela "Segue" para acelerar a busca de todos os seguidores de um usuário específico
