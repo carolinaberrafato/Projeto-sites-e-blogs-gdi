@@ -140,7 +140,10 @@ AND email_usuario IN (
 );
 
 -- SUBCONSULTA COM ALL -------------------------
-
+-- Retorna o email do usuário que fez mais postagens 
+SELECT email_usuario
+FROM Usuario
+WHERE numero_postagens >= ALL (SELECT numero_postagens FROM Usuario)
 
 
 -- ORDER BY ------------------------- [OK]
