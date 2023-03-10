@@ -1,5 +1,16 @@
 -- USO DE RECORD -------------------------
+-- Cria um registro (record) telefone_rec. Faz-se uma consulta à tabela Telefone com WHERE especificando email_perfil com valor nivan@cin.ufpe.br e então se armazena os resultados na variável telefone_rec
+DECLARE
+telefone_rec Telefone%ROWTYPE;
+BEGIN
+SELECT *
+INTO telefone_rec
+FROM Telefone
+WHERE email_perfil = 'nivan@cin.ufpe.br';
 
+DBMS_OUTPUT.PUT_LINE('Email do Perfil: ' || telefone_rec.email_perfil);
+DBMS_OUTPUT.PUT_LINE('Número de Telefone: ' || telefone_rec.num_telefone);
+END;
 
 
 -- USO DE ESTRUTURA DE DADOS DO TIPO TABLE -------------------------
