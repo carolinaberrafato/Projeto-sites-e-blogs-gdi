@@ -276,14 +276,47 @@ BEGIN
    INSERT INTO Perfil(email, nome, sobrenome, data_nascimento, data_cadastro) VALUES (p_email, p_nome, p_sobrenome, p_data_nascimento, p_data_cadastro);
    COMMIT;
 END adicionar_perfil;
-
+/
 -- CREATE OR REPLACE PACKAGE -------------------------
+--  O package vai ser um admin responsável por chamar os métodos para excluir comentários das postagens ou excluir respostas dos comentários. Quando um comentário é excluído na tabela 'comentario', também tem que ser excluído nas tabelas de 'associa2' e 'resposta'.
+CREATE OR REPLACE PACKAGE Admin AS
+procedure excluir_comentario(
+  p_id IN comentario.id%TYPE 
+);
 
-
+procedure excluir_resposta(
+  p_id_resposta in resposta.id_resposta%TYPE,
+  p_id_comentario in resposta.id_comentario%TYPE
+);
+END Admin;
+/
 
 -- CREATE OR REPLACE PACKAGE BODY -------------------------
+CREATE OR REPLACE PACKAGE BODY Admin AS
+  PROCEDURE excluir_comentario(
+    p_id IN comentario.id%TYPE 
+  ) IS
+  BEGIN
+    DELETE FROM resposta
+    WHERE id_comentario = p_id;
 
+    DELETE FROM Associa1
+    WHERE comentario = p_id;
 
+    DELETE FROM comentario
+    WHERE id = p_id;
+  END excluir_comentario;
+
+  PROCEDURE excluir_resposta(
+  p_id_resposta in resposta.id_resposta%TYPE,
+  p_id_comentario in resposta.id_comentario%TYPE
+) IS
+  BEGIN
+    DELETE FROM resposta
+    WHERE id_comentario = p_id_comentario AND id_resposta = p_id_resposta;
+  END excluir_resposta;
+END Admin;
+/
 
 -- CREATE OR REPLACE TRIGGER (COMANDO) -------------------------
 
