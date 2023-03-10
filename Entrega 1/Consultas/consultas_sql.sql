@@ -34,12 +34,8 @@ DELETE FROM Acompanha WHERE usuario_associado = 'valeria@cin.ufpe.br' AND  topic
 -- SELECT-FROM-WHERE -------------------------
 -- encontrar o email do usuário que possui o maior número de postagens e o título da sua última postagem
 
-SELECT u.email_usuario, p.titulo_da_postagem
-FROM Usuario u
-JOIN Postagem p ON u.email_usuario = p.usuario_associado
-WHERE u.numero_postagens = (SELECT MAX(numero_postagens) FROM Usuario)
-ORDER BY p.data_publicacao DESC
-FETCH FIRST 1 ROW ONLY;
+SELECT seguidor
+FROM Segue WHERE seguido = 'silvio@cin.ufpe.br';
 
 
 -- BETWEEN ------------------------- [OK]
