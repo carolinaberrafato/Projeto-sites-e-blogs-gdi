@@ -253,7 +253,29 @@ END adicionar_perfil;
 
 -- CREATE OR REPLACE TRIGGER (COMANDO) -------------------------
 
+-- Trigger acionado após a inserção de uma nova postagem
+CREATE OR REPLACE TRIGGER nova_postagem
+AFTER INSERT ON Postagem
+  BEGIN
+    dbms_output.put_line('Postagem inserida com sucesso!');
+  END;
 
+  /*  Exemplo para teste:
+      INSERT INTO Postagem(id, usuario_associado, titulo_da_postagem, data_publicacao) VALUES (DEFAULT,'silvio@cin.ufpe.br', 'abram boldrini na pagina 200', to_date('12/08/2022', 'dd/mm/yy'));
+  */
 
 -- CREATE OR REPLACE TRIGGER (LINHA) -------------------------
 
+-- Trigger acionado após quaisquer atualizações em postagens
+CREATE OR REPLACE TRIGGER atualizacao_postagem
+AFTER UPDATE ON Postagem
+FOR EACH ROW
+  BEGIN
+    dbms_output.put_line('Postagem atualizada com sucesso!');
+  END;
+
+  /*  Exemplo para teste:
+      UPDATE Postagem
+      SET titulo_da_postagem = 'uma análise crítica do livro de boldrini, volume 2'
+      WHERE id = '1';
+  */
