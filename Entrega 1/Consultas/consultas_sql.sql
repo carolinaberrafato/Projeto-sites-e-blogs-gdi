@@ -15,7 +15,9 @@ ORDER BY seguidor;
 
 
 -- INSERT INTO -------------------------
-
+-- Para a criação da conta de Gustavo no banco de dados, insere nas tabelas Perfil e Usuario
+INSERT INTO Perfil(email, nome, sobrenome, data_nascimento, data_cadastro) VALUES ('gustavo@cin.ufpe.br', 'Gusstavo', 'Carvalho', to_date('23/11/1984', 'dd/mm/yy'), to_date('10/09/2006', 'dd/mm/yy'));
+INSERT INTO Usuario(email_usuario, data_assinatura, numero_postagens) VALUES ('gustavo@cin.ufpe.br', to_date('10/09/2006', 'dd/mm/yy'), 93);
 
 
 -- UPDATE ------------------------- [OK]
@@ -25,7 +27,8 @@ SET mensagem = 'Achei muito bom'
 WHERE id = '2';
 
 -- DELETE -------------------------
-
+--Deleta a informação de que o usuário com email valeria@cin.ufpe.br acompanha o tópico Economia da tabela Acompanha
+DELETE FROM Acompanha WHERE usuario_associado = 'valeria@cin.ufpe.br' AND  topico_associado = 'Economia';
 
 
 -- SELECT-FROM-WHERE -------------------------
