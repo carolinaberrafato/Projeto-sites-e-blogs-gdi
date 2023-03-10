@@ -32,7 +32,21 @@ END;
 
 
 -- BLOCO ANÔNIMO -------------------------
-
+-- Atualizando o número de postagens de um usuário
+DECLARE
+   v_email_usuario Usuario.email_usuario%TYPE := 'valeria@cin.ufpe.br';
+   v_numero_postagens Usuario.numero_postagens%TYPE := 10;
+BEGIN
+   UPDATE Usuario
+   SET numero_postagens = v_numero_postagens
+   WHERE email_usuario = v_email_usuario;
+   DBMS_OUTPUT.PUT_LINE('O número de postagens do usuário foi atualizado com sucesso!');
+EXCEPTION
+   WHEN NO_DATA_FOUND THEN
+      DBMS_OUTPUT.PUT_LINE('Nenhum usuário encontrado com o e-mail informado.');
+   WHEN OTHERS THEN
+      DBMS_OUTPUT.PUT_LINE('Ocorreu um erro ao atualizar o número de postagens do usuário: ' || SQLERRM);
+END;
 
 
 -- CREATE PROCEDURE -------------------------
