@@ -179,7 +179,11 @@ FROM Resposta;
 
 
 -- CREATE VIEW -------------------------
-
+-- Cria uma view na qual consta os usuários que acompanham o tópico Ciência e Tecnologia
+CREATE VIEW Ciência_e_Tecnologia AS
+SELECT usuario_associado, topico_associado
+FROM Acompanha
+WHERE topico_associado = 'Ciência e Tecnologia';
 
 
 -- GRANT / REVOKE -------------------------
