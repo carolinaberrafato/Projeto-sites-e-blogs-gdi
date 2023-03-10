@@ -187,4 +187,7 @@ WHERE topico_associado = 'Ciência e Tecnologia';
 
 
 -- GRANT / REVOKE -------------------------
-
+   --GRANT: Garantido todos os previlégios (select, insert, delete, update e todos os privilégios) para todos
+   --REVOKE: Retirando os previlégios de DELETE, INSERT E UPDATE para todos */
+GRANT ALL PRIVILEGES ON Perfil TO PUBLIC;
+REVOKE DELETE, INSERT, UPDATE FROM PUBLIC;
