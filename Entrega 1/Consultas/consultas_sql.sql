@@ -129,14 +129,14 @@ WHERE email_usuario IN
 
 
 -- SUBCONSULTA COM ANY -------------------------
--- filtrar os usuários que assinaram antes de 2020 e têm pelo menos um seguidor
-SELECT *
-FROM Usuario
-WHERE data_assinatura < to_date('01/01/2020', 'dd/mm/yyyy')
-AND email_usuario IN (
-  SELECT seguido
-  FROM Segue
-  WHERE seguido IS NOT NULL
+-- Selecionando id e mensagem dos comentários que tiveram mais curtidas do que os comentários feitos depois de 03/03/2023
+
+SELECT id, mensagem
+FROM Comentario
+WHERE num_curtidas > ANY (
+  SELECT num_curtidas
+  FROM Comentario
+  WHERE data_publicacao > TO_DATE('03-03-2023', 'DD-MM-YYYY')
 );
 
 -- SUBCONSULTA COM ALL -------------------------
