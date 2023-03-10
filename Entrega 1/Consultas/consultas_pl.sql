@@ -1,9 +1,34 @@
 -- USO DE RECORD -------------------------
+-- Cria um registro (record) telefone_rec. Faz-se uma consulta à tabela Telefone com WHERE especificando email_perfil com valor nivan@cin.ufpe.br e então se armazena os resultados na variável telefone_rec
+DECLARE
+telefone_rec Telefone%ROWTYPE;
+BEGIN
+SELECT *
+INTO telefone_rec
+FROM Telefone
+WHERE email_perfil = 'nivan@cin.ufpe.br';
 
+DBMS_OUTPUT.PUT_LINE('Email do Perfil: ' || telefone_rec.email_perfil);
+DBMS_OUTPUT.PUT_LINE('Número de Telefone: ' || telefone_rec.num_telefone);
+END;
 
 
 -- USO DE ESTRUTURA DE DADOS DO TIPO TABLE -------------------------
+-- Faz a cópia do tipo da tabela de Topico.nome_do_topico e printa todos os topicos
+DECLARE
+    TYPE topico_type IS TABLE OF Topico.nome_do_topico%TYPE
+    INDEX BY BINARY_INTEGER;
+    nome_do_topico_table topico_type;
+    i BINARY_INTEGER;
 
+BEGIN
+    i := 0;
+    FOR topicos IN (SELECT nome_do_topico FROM Topico) LOOP
+        nome_do_topico_table(i) := topicos.nome_do_topico;
+        DBMS_OUTPUT.PUT_LINE(nome_do_topico_table(i));
+        i := i + 1;
+    END LOOP;
+END;
 
 
 -- BLOCO ANÔNIMO -------------------------
