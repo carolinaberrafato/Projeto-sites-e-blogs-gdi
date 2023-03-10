@@ -140,7 +140,10 @@ WHERE num_curtidas > ANY (
 );
 
 -- SUBCONSULTA COM ALL -------------------------
-
+-- Retorna o email do usuário que fez mais postagens 
+SELECT email_usuario
+FROM Usuario
+WHERE numero_postagens >= ALL (SELECT numero_postagens FROM Usuario)
 
 
 -- ORDER BY ------------------------- [OK]
@@ -176,8 +179,15 @@ FROM Resposta;
 
 
 -- CREATE VIEW -------------------------
-
+-- Cria uma view na qual consta os usuários que acompanham o tópico Ciência e Tecnologia
+CREATE VIEW Ciência_e_Tecnologia AS
+SELECT usuario_associado, topico_associado
+FROM Acompanha
+WHERE topico_associado = 'Ciência e Tecnologia';
 
 
 -- GRANT / REVOKE -------------------------
-
+   --GRANT: Garantido todos os previlégios (select, insert, delete, update e todos os privilégios) para todos
+   --REVOKE: Retirando os previlégios de DELETE, INSERT E UPDATE para todos */
+GRANT ALL PRIVILEGES ON Perfil TO PUBLIC;
+REVOKE DELETE, INSERT, UPDATE FROM PUBLIC;
