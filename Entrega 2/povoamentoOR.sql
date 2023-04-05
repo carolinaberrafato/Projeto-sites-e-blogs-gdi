@@ -78,7 +78,7 @@ VALUES (tp_topico('Política', tp_nt_acompanha(tp_acompanha((SELECT REF(u) FROM 
 
 INSERT INTO tb_topico
 VALUES (tp_topico('Humor', tp_nt_acompanha(tp_acompanha((SELECT REF(u) FROM tb_usuario u WHERE u.email = 'mariaf@example.com'), TO_DATE('2023-01-01', 'YYYY-MM-DD'), TO_DATE('2023-02-01', 'YYYY-MM-DD')))));
-                                                                                                                                  
+                                                                                                                                                                                                                                                                  
 INSERT INTO tb_topico
 VALUES (tp_topico('Noticias', tp_nt_acompanha(tp_acompanha((SELECT REF(u) FROM tb_usuario u WHERE u.email = 'filipec@example.com'), TO_DATE('2023-01-01', 'YYYY-MM-DD'), TO_DATE('2023-02-01', 'YYYY-MM-DD')))));
                                                                                                                                   
