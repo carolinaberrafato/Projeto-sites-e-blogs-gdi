@@ -73,17 +73,17 @@ VALUES ((SELECT REF(c) FROM tb_comentario c WHERE c.id = '5'), '005', TO_DATE('0
 
 -- tabela acompanha (nested table)
                                                                                                                                   
-INSERT INTO tb_topico
-VALUES (tp_topico('Humor', tp_nt_acompanha(tp_acompanha((SELECT REF(u) FROM tb_usuario u WHERE u.email = 'mariaf@example.com'), TO_DATE('2023-01-01', 'YYYY-MM-DD'), TO_DATE('2023-02-01', 'YYYY-MM-DD')))));
+-- INSERT INTO tb_topico
+-- VALUES (tp_topico('Humor', tp_nt_acompanha(tp_acompanha((SELECT REF(u) FROM tb_usuario u WHERE u.email = 'mariaf@example.com'), TO_DATE('2023-01-01', 'YYYY-MM-DD'), TO_DATE('2023-02-01', 'YYYY-MM-DD')))));
                                                                                                                                   
-INSERT INTO tb_topico
-VALUES (tp_topico('Noticias', tp_nt_acompanha(tp_acompanha((SELECT REF(u) FROM tb_usuario u WHERE u.email = 'filipec@example.com'), TO_DATE('2023-01-01', 'YYYY-MM-DD'), TO_DATE('2023-02-01', 'YYYY-MM-DD')))));
+-- INSERT INTO tb_topico
+-- VALUES (tp_topico('Noticias', tp_nt_acompanha(tp_acompanha((SELECT REF(u) FROM tb_usuario u WHERE u.email = 'filipec@example.com'), TO_DATE('2023-01-01', 'YYYY-MM-DD'), TO_DATE('2023-02-01', 'YYYY-MM-DD')))));
                                                                                                                                   
-INSERT INTO tb_topico
-VALUES (tp_topico('Ciência', tp_nt_acompanha(tp_acompanha((SELECT REF(u) FROM tb_usuario u WHERE u.email = 'thiagom@example.com'), TO_DATE('2023-01-01', 'YYYY-MM-DD'), TO_DATE('2023-02-01', 'YYYY-MM-DD')))));
+-- INSERT INTO tb_topico
+-- VALUES (tp_topico('Ciência', tp_nt_acompanha(tp_acompanha((SELECT REF(u) FROM tb_usuario u WHERE u.email = 'thiagom@example.com'), TO_DATE('2023-01-01', 'YYYY-MM-DD'), TO_DATE('2023-02-01', 'YYYY-MM-DD')))));
                                                                                                                                   
-INSERT INTO tb_topico
-VALUES (tp_topico('Esportes', tp_nt_acompanha(tp_acompanha((SELECT REF(u) FROM tb_usuario u WHERE u.email = 'gabrielb@example.com'), TO_DATE('2023-01-01', 'YYYY-MM-DD'), TO_DATE('2023-02-01', 'YYYY-MM-DD')))));
+-- INSERT INTO tb_topico
+-- VALUES (tp_topico('Esportes', tp_nt_acompanha(tp_acompanha((SELECT REF(u) FROM tb_usuario u WHERE u.email = 'gabrielb@example.com'), TO_DATE('2023-01-01', 'YYYY-MM-DD'), TO_DATE('2023-02-01', 'YYYY-MM-DD')))));
 
 -- tabela topico
 
