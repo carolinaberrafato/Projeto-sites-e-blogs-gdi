@@ -132,6 +132,29 @@ CREATE OR REPLACE TYPE tp_topico AS OBJECT(
 );
 /
 
+-- Postagem
+
+CREATE OR REPLACE TYPE tp_postagem AS OBJECT(
+    id VARCHAR2(10),
+    titulo_da_postagem VARCHAR2(60),
+    data_publicacao DATE
+);
+/
+
+CREATE OR REPLACE TYPE tp_usuario_postagem AS OBJECT (
+    usuario REF tp_usuario,
+    postagem REF tp_postagem
+);
+/
+
+ALTER TYPE tp_usuario_postagem ADD ATTRIBUTE (
+  id_associado VARCHAR2(10)
+) CASCADE;
+/
+
+CREATE OR REPLACE TYPE tp_nt_usuario_postagem AS TABLE OF tp_usuario_postagem;
+/
+
 -- Comentário
 
 CREATE OR REPLACE TYPE tp_comentario AS OBJECT (
@@ -143,16 +166,6 @@ CREATE OR REPLACE TYPE tp_comentario AS OBJECT (
 );
 /
 
--- Postagem
-
-CREATE OR REPLACE TYPE tp_postagem AS OBJECT(
-    id NUMBER,
-    usuario_associado VARCHAR2(60),
-    titulo_da_postagem VARCHAR2(60),
-    data_publicacao DATE
-);
-/
-
 -- Resposta
 
 CREATE OR REPLACE TYPE tp_resposta AS OBJECT(
@@ -161,4 +174,34 @@ CREATE OR REPLACE TYPE tp_resposta AS OBJECT(
     data_publicacao DATE,
     mensagem VARCHAR2(255)
 );
+/
+
+-- Associa1 (postagem - comentário)
+CREATE OR REPLACE TYPE tp_postagem_comentario AS OBJECT (
+    postagem REF tp_postagem,
+    comentario REF tp_comentario
+);
+/
+
+ALTER TYPE tp_postagem_comentario ADD ATTRIBUTE (
+  id_associado VARCHAR2(10)
+) CASCADE;
+/
+
+CREATE OR REPLACE TYPE tp_nt_postagem_comentario AS TABLE OF tp_postagem_comentario;
+/
+
+-- Associa2 (tópico - postagem)
+CREATE OR REPLACE TYPE tp_topico_postagem AS OBJECT (
+    topico REF tp_topico,
+    postagem REF tp_postagem
+);
+/
+
+ALTER TYPE tp_topico_postagem ADD ATTRIBUTE (
+  id_associado VARCHAR2(10)
+) CASCADE;
+/
+
+CREATE OR REPLACE TYPE tp_nt_topico_postagem AS TABLE OF tp_topico_postagem;
 /
