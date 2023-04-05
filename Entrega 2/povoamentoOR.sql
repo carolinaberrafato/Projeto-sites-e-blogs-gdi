@@ -72,7 +72,10 @@ INSERT INTO tb_resposta (id_comentario, id_resposta, data_publicacao, mensagem)
 VALUES ((SELECT REF(c) FROM tb_comentario c WHERE c.id = '5'), '005', TO_DATE('05-04-2023', 'dd-mm-yyyy'), 'De nada!');
 
 -- tabela acompanha (nested table)
-                                                                                                                                  
+
+INSERT INTO tb_topico
+VALUES (tp_topico('Política', tp_nt_acompanha(tp_acompanha((SELECT REF(u) FROM tb_usuario u WHERE u.email = 'joaof@example.com'), TO_DATE('2023-01-01', 'YYYY-MM-DD'), TO_DATE('2023-02-01', 'YYYY-MM-DD')))));
+
 INSERT INTO tb_topico
 VALUES (tp_topico('Humor', tp_nt_acompanha(tp_acompanha((SELECT REF(u) FROM tb_usuario u WHERE u.email = 'mariaf@example.com'), TO_DATE('2023-01-01', 'YYYY-MM-DD'), TO_DATE('2023-02-01', 'YYYY-MM-DD')))));
                                                                                                                                   
@@ -84,43 +87,6 @@ VALUES (tp_topico('Ciência', tp_nt_acompanha(tp_acompanha((SELECT REF(u) FROM t
                                                                                                                                   
 INSERT INTO tb_topico
 VALUES (tp_topico('Esportes', tp_nt_acompanha(tp_acompanha((SELECT REF(u) FROM tb_usuario u WHERE u.email = 'gabrielb@example.com'), TO_DATE('2023-01-01', 'YYYY-MM-DD'), TO_DATE('2023-02-01', 'YYYY-MM-DD')))));
-
--- tabela topico
-
-INSERT INTO tb_topico VALUES (
-    tp_topico('Política', 
-              tp_nt_acompanha(tp_acompanha(
-                  (SELECT REF(u) FROM tb_usuario u WHERE u.email = 'joaof@example.com'), 
-                  TO_DATE('2023-01-01', 'YYYY-MM-DD'), 
-                  TO_DATE('2023-02-01', 'YYYY-MM-DD')))));
-
-INSERT INTO tb_topico VALUES (
-    tp_topico('Humor', 
-              tp_nt_acompanha(tp_acompanha(
-                  (SELECT REF(u) FROM tb_usuario u WHERE u.email = 'mariaf@example.com'), 
-                  TO_DATE('2023-01-01', 'YYYY-MM-DD'), 
-                  TO_DATE('2023-02-01', 'YYYY-MM-DD')))));
-
-INSERT INTO tb_topico VALUES (
-    tp_topico('Noticias', 
-              tp_nt_acompanha(tp_acompanha(
-                  (SELECT REF(u) FROM tb_usuario u WHERE u.email = 'filipec@example.com'), 
-                  TO_DATE('2023-01-01', 'YYYY-MM-DD'), 
-                  TO_DATE('2023-02-01', 'YYYY-MM-DD')))));
-
-INSERT INTO tb_topico VALUES (
-    tp_topico('Ciência', 
-              tp_nt_acompanha(tp_acompanha(
-                  (SELECT REF(u) FROM tb_usuario u WHERE u.email = 'thiagom@example.com'), 
-                  TO_DATE('2023-01-01', 'YYYY-MM-DD'), 
-                  TO_DATE('2023-02-01', 'YYYY-MM-DD')))));
-
-INSERT INTO tb_topico VALUES (
-    tp_topico('Esportes', 
-              tp_nt_acompanha(tp_acompanha(
-                  (SELECT REF(u) FROM tb_usuario u WHERE u.email = 'gabrielb@example.com'), 
-                  TO_DATE('2023-01-01', 'YYYY-MM-DD'), 
-                  TO_DATE('2023-02-01', 'YYYY-MM-DD')))));
 
 -- tabela seguidor
 
@@ -225,5 +191,41 @@ INSERT INTO tb_topico_postagem (id_associado, topico, postagem)
 VALUES (
     '5', 
     (SELECT REF(T) FROM tb_topico T where T.nome_do_topico = 'Esportes'), 
+    (SELECT REF(P) FROM tb_postagem P where P.id = '5')
+);
+
+-- Usuario_Postagem
+INSERT INTO tb_usuario_postagem (id_associado, usuario, postagem)
+VALUES (
+    '1',
+    (SELECT REF(U) FROM tb_usuario U where U.email = 'joaof@example.com'), 
+    (SELECT REF(P) FROM tb_postagem P where P.id = '1')
+);
+
+INSERT INTO tb_usuario_postagem (id_associado, usuario, postagem)
+VALUES (
+    '2',
+    (SELECT REF(U) FROM tb_usuario U where U.email = 'mariaf@example.com'), 
+    (SELECT REF(P) FROM tb_postagem P where P.id = '2')
+);
+
+INSERT INTO tb_usuario_postagem (id_associado, usuario, postagem)
+VALUES (
+    '3',
+    (SELECT REF(U) FROM tb_usuario U where U.email = 'filipec@example.com'), 
+    (SELECT REF(P) FROM tb_postagem P where P.id = '3')
+);
+
+INSERT INTO tb_usuario_postagem (id_associado, usuario, postagem)
+VALUES (
+    '4',
+    (SELECT REF(U) FROM tb_usuario U where U.email = 'thiagom@example.com'), 
+    (SELECT REF(P) FROM tb_postagem P where P.id = '4')
+);
+
+INSERT INTO tb_usuario_postagem (id_associado, usuario, postagem)
+VALUES (
+    '5',
+    (SELECT REF(U) FROM tb_usuario U where U.email = 'gabrielb@example.com'), 
     (SELECT REF(P) FROM tb_postagem P where P.id = '5')
 );

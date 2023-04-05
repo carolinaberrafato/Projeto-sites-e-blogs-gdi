@@ -1,23 +1,24 @@
 -- Telefone ------------------------------------------
 
 CREATE OR REPLACE TYPE tp_telefone AS OBJECT (
-    numero VARCHAR2(11),
-    FINAL MAP MEMBER FUNCTION get_numero RETURN VARCHAR2
+    numero VARCHAR2(11)
+    -- FINAL MAP MEMBER FUNCTION get_numero RETURN VARCHAR2
 );
 /
 
-CREATE OR REPLACE TYPE BODY tp_telefone AS
-    MAP MEMBER FUNCTION get_numero RETURN VARCHAR2 IS
-        BEGIN
-            RETURN numero;
-        END;
-END;
-/
+-- CREATE OR REPLACE TYPE BODY tp_telefone AS
+--     MAP MEMBER FUNCTION get_numero RETURN VARCHAR2 IS
+--         BEGIN
+--             RETURN numero;
+--         END;
+-- END;
+-- /
 
 -- VARRAY de telefones
 
 CREATE OR REPLACE TYPE varray_tp_telefone AS VARRAY(5) OF tp_telefone;
 /
+
 
 -- Função que checa se há espaço disponível na varray_tp_telefone e, caso sim, insere um novo valor
 
@@ -31,6 +32,18 @@ CREATE OR REPLACE TYPE BODY varray_tp_telefone AS
             RETURN FALSE;
         END IF;
     END;
+    MEMBER FUNCTION listar_numeros RETURN VARCHAR2 AS
+        v_numeros VARCHAR2(500);
+    BEGIN
+        v_numeros := '';
+        FOR i IN 1..self.COUNT LOOP
+            v_numeros := v_numeros || self(i).numero || ', ';
+        END LOOP;
+        -- Remove a última vírgula e espaço da string
+        v_numeros := RTRIM(v_numeros, ', ');
+
+        RETURN v_numeros;
+    END listar_numeros;
 END;
 /
 
