@@ -55,7 +55,7 @@ CREATE OR REPLACE TYPE tp_perfil AS OBJECT (
     sobrenome VARCHAR2(255),
     data_nasc DATE,
     telefones varray_tp_telefone,
-    MEMBER PROCEDURE mostrar_info
+    MEMBER PROCEDURE mostrar_info  (SELF tp_perfil)
 ) NOT FINAL NOT INSTANTIABLE;
 /
 
@@ -64,8 +64,17 @@ CREATE OR REPLACE TYPE tp_perfil AS OBJECT (
 CREATE OR REPLACE TYPE tp_usuario UNDER tp_perfil (
     num_postagens NUMBER,
     data_assinatura DATE,
-    OVERRIDING MEMBER PROCEDURE mostrar_info,
-    CONSTRUCTOR FUNCTION tp_usuario(x1 tp_usuario) RETURN SELF AS RESULT
+    OVERRIDING MEMBER PROCEDURE mostrar_info ( SELF tp_usuario),
+    CONSTRUCTOR FUNCTION tp_usuario(
+        p_email VARCHAR2,
+        p_nome VARCHAR2,
+        p_sobrenome VARCHAR2,
+        p_data_nasc DATE,
+        p_data_cad DATE,
+        p_telefones varray_tp_telefone,
+        p_num_postagens NUMBER,
+        p_data_assinatura DATE
+    ) RETURN SELF AS RESULT
 );
 /
 
@@ -81,29 +90,38 @@ ALTER TYPE tp_perfil ADD ATTRIBUTE (
 ) CASCADE;
 
 CREATE OR REPLACE TYPE BODY tp_usuario AS 
-    OVERRIDING MEMBER PROCEDURE mostrar_info IS  
-        BEGIN 
+    OVERRIDING MEMBER PROCEDURE mostrar_info ( SELF tp_usuario) IS
+    BEGIN 
             DBMS_OUTPUT.PUT_LINE(email); 
             DBMS_OUTPUT.PUT_LINE(nome); 
             DBMS_OUTPUT.PUT_LINE(sobrenome); 
 			DBMS_OUTPUT.PUT_LINE(data_nasc); 
 			DBMS_OUTPUT.PUT_LINE(data_cad); 
-			DBMS_OUTPUT.PUT_LINE(telefones); 
 			DBMS_OUTPUT.PUT_LINE(num_postagens); 
 			DBMS_OUTPUT.PUT_LINE(data_assinatura); 
         END; 
-    CONSTRUCTOR FUNCTION tp_cliente (x1 tp_usuario) RETURN SELF AS RESULT IS 
-        BEGIN 
-            email := x1.email; 
-            nome := x1.nome; 
-            sobrenome := x1.sobrenome; 
-            data_nasc := x1.data_nasc; 
-            data_cad := x1.data_cad; 
-            telefones := x1.telefones; 
-            num_postagens := x1.num_postagens; 
-            data_assinatura := x1.data_assinatura; 
-            RETURN; 
-        END; 
+
+    CONSTRUCTOR FUNCTION tp_usuario(
+        p_email VARCHAR2,
+        p_nome VARCHAR2,
+        p_sobrenome VARCHAR2,
+        p_data_nasc DATE,
+        p_data_cad DATE,
+        p_telefones varray_tp_telefone,
+        p_num_postagens NUMBER,
+        p_data_assinatura DATE
+    ) RETURN SELF AS RESULT IS
+    BEGIN 
+        email := p_email; 
+        nome := p_nome; 
+        sobrenome := p_sobrenome; 
+        data_nasc := p_data_nasc; 
+        data_cad := p_data_cad; 
+        telefones := p_telefones; 
+        num_postagens := p_num_postagens; 
+        data_assinatura := p_data_assinatura; 
+        RETURN; 
+    END;  
 END;
 /
 

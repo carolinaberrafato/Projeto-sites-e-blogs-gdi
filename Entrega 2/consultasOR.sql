@@ -23,3 +23,39 @@ FROM tb_usuario u
 JOIN TABLE(u.telefones) t ON 1=1
 ORDER BY u.nome, u.sobrenome;
 /
+
+-- Lista os usuários e postagens feitas pelos usuários que acompanham os tópicos 'Noticias' e 'Humor'
+SELECT t.nome_do_topico AS topico, a.usuario_associado.nome AS nome, p.titulo_da_postagem
+FROM tb_topico t, TABLE(t.acompanha) a
+JOIN tb_usuario u ON a.usuario_associado.email = u.email
+JOIN tb_usuario_postagem up ON REF(u) = up.usuario
+JOIN tb_postagem p ON up.postagem = ref(p)
+WHERE t.nome_do_topico = 'Noticias' OR t.nome_do_topico = 'Humor'
+/
+-- Cria uma variável do tipo tp_usuario e mostra as informações
+DECLARE
+  u tp_usuario := tp_usuario(
+    TO_CHAR('joaof@example.com'),
+    TO_CHAR('João'), 
+    TO_CHAR('Fulanoton'), 
+    TO_DATE('2000-01-01', 'YYYY-MM-DD'), 
+    TO_DATE('2022-01-01', 'YYYY-MM-DD'), 
+    varray_tp_telefone(tp_telefone('12345678901')),
+    TO_NUMBER(10), 
+    TO_DATE('2022-01-01', 'YYYY-MM-DD')
+  );
+BEGIN
+  u.mostrar_info;
+END;
+/
+
+-- Busca na tabela tb_usuario um usuario através de email, e mostra as informações
+DECLARE
+	us tp_usuario;
+BEGIN
+	SELECT VALUE(u) INTO us FROM tb_usuario u
+	WHERE u.email = 'filipec@example.com';
+
+	us.mostrar_info();
+END;
+/
