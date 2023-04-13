@@ -59,3 +59,11 @@ BEGIN
 	us.mostrar_info();
 END;
 /
+
+-- Busca na tabela tb_seguidor todos os seguidores de um usuário através de seu email e mostra seu nome, sobrenome, email e número de telefone
+
+SELECT DEREF(s.seguidor).nome AS Nome, DEREF(s.seguidor).sobrenome AS Sobrenome, DEREF(s.seguidor).email AS Email, t.numero AS Telefone
+FROM tb_seguidor s
+JOIN TABLE(DEREF(s.seguidor).telefones) t ON 1=1
+WHERE DEREF(s.seguido).email = 'thiagom@example.com';
+/
