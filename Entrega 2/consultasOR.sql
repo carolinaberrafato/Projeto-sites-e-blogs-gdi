@@ -66,4 +66,15 @@ SELECT DEREF(s.seguidor).nome AS Nome, DEREF(s.seguidor).sobrenome AS Sobrenome,
 FROM tb_seguidor s
 JOIN TABLE(DEREF(s.seguidor).telefones) t ON 1=1
 WHERE DEREF(s.seguido).email = 'thiagom@example.com';
+
+-- Consultar telefones de moderadores
+SELECT M.email, T.*
+FROM tb_moderador M, TABLE(M.telefones) T
+/
+
+-- Consulta ao conteúdo da mensagem e número de curtidas dos comentários postados nos dias 04/04/2023 e 03/04/2023
+SELECT c.mensagem, c.num_curtidas
+FROM tb_comentario c
+WHERE c.data_publicacao = TO_DATE('2023-04-04', 'YYYY-MM-DD')
+OR c.data_publicacao = TO_DATE('2023-04-03', 'YYYY-MM-DD')
 /
