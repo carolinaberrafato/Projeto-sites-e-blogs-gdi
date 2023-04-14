@@ -18,10 +18,13 @@ CREATE OR REPLACE TYPE BODY tp_telefone AS
         BEGIN
             RETURN SUBSTR(numero, 1, 2);
         END;
+END;
+/
+
 CREATE OR REPLACE TYPE tp_varray_tp_telefone AS OBJECT (
     varray_telefone varray_tp_telefone,
     MEMBER FUNCTION listar_numeros (SELF_OBJ IN tp_varray_tp_telefone) RETURN VARCHAR2
-)
+);
 /
 -- Função que checa se há espaço disponível na varray_tp_telefone e, caso sim, insere um novo valor
 

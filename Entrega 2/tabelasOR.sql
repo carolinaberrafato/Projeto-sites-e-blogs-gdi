@@ -75,5 +75,3 @@ CREATE TABLE tb_topico_postagem OF tp_topico_postagem (
     postagem WITH ROWID REFERENCES tb_postagem
 );
 /
-
-
