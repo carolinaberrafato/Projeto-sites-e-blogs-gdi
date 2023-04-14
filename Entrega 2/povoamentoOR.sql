@@ -13,7 +13,7 @@ INSERT INTO tb_usuario (email, num_postagens, data_assinatura, telefones, nome, 
 VALUES ('thiagom@example.com', 8, TO_DATE('2022-03-10', 'YYYY-MM-DD'), varray_tp_telefone(tp_telefone('65478932101'), tp_telefone('98765412301')), 'Thiago', 'McCiclano', TO_DATE('1998-01-01', 'YYYY-MM-DD'), TO_DATE('2022-03-25', 'YYYY-MM-DD'));
 
 INSERT INTO tb_usuario (email, num_postagens, data_assinatura, telefones, nome, sobrenome, data_nasc, data_cad)
-VALUES ('gabrielb@example.com', 15, TO_DATE('2021-09-20', 'YYYY-MM-DD'), varray_tp_telefone(tp_telefone('45678998701')), 'Thiago', 'Beltranoson', TO_DATE('1997-01-01', 'YYYY-MM-DD'), TO_DATE('2021-10-21', 'YYYY-MM-DD'));
+VALUES ('gabrielb@example.com', 15, TO_DATE('2021-09-20', 'YYYY-MM-DD'), varray_tp_telefone(tp_telefone('45678998701')), 'Gabriel', 'Beltranoson', TO_DATE('1997-01-01', 'YYYY-MM-DD'), TO_DATE('2021-10-21', 'YYYY-MM-DD'));
 
 -- tabela moderador [OK]
 

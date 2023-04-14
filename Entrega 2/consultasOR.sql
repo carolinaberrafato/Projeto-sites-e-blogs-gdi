@@ -59,3 +59,57 @@ BEGIN
 	us.mostrar_info();
 END;
 /
+-- Cria 2 objetos tp_acompanha e usa a ORDER MEMBER FUNCTION compara_tempo_acompanhamento
+DECLARE
+  ac1 tp_acompanha;
+  ref1 REF tp_usuario;
+  ac2 tp_acompanha;
+  ref2 REF tp_usuario;
+  tempo NUMBER;
+BEGIN
+  SELECT REF(US) INTO ref1 FROM tb_usuario US WHERE email = 'filipec@example.com';
+  SELECT REF(US) INTO ref2 FROM tb_usuario US WHERE email = 'thiagom@example.com';
+  ac1:= tp_acompanha(
+    ref1,
+    TO_DATE('2022-01-01', 'YYYY-MM-DD'),
+    TO_DATE('2022-01-12', 'YYYY-MM-DD')
+  );
+  ac2:= tp_acompanha(
+    ref2,
+    TO_DATE('2022-01-01', 'YYYY-MM-DD'),
+    TO_DATE('2022-01-20', 'YYYY-MM-DD')
+  );
+  tempo := ac1.compara_tempo_acompanhamento(ac2);
+  DBMS_OUTPUT.PUT_LINE(tempo || ' dias');
+END;
+
+-- Seleciona os acompanhamentos de 'Maria' no tópico 'Humor', e 'Gabriel' no tópico 'Esportes' e compara usando a ORDER MEMBER FUNCTION 'compara_tempo_acompanhamento'
+DECLARE
+  ac1 tp_acompanha;
+  ac2 tp_acompanha;
+  tempo NUMBER;
+BEGIN
+  SELECT VALUE(a) INTO ac1 FROM tb_topico t, TABLE(t.acompanha) a WHERE a.usuario_associado.email = 'mariaf@example.com' AND t.nome_do_topico = 'Humor';
+  SELECT VALUE(a) INTO ac2 FROM tb_topico t, TABLE(t.acompanha) a WHERE a.usuario_associado.email = 'gabrielb@example.com' AND t.nome_do_topico = 'Esportes';
+  tempo := ac1.compara_tempo_acompanhamento(ac2);
+  DBMS_OUTPUT.PUT_LINE(tempo || ' dias');
+END;
+
+-- Mostra toda a tabela tb_topico_postagem
+SELECT t.id_associado, DEREF(t.topico).nome_do_topico, DEREF(t.postagem).titulo_da_postagem
+FROM tb_topico_postagem t;
+
+-- Mostra os usuários que fizeram postagem em tópicos que eles acompanham, bem como o nome do tópico e o título da postagem
+SELECT a.usuario_associado.nome AS Nome, DEREF(tp.topico).nome_do_topico AS Topico, DEREF(tp.postagem).titulo_da_postagem AS Titulo_Postagem
+    FROM tb_topico t, TABLE(t.acompanha) a
+    JOIN tb_usuario_postagem up ON DEREF(up.usuario).email = a.usuario_associado.email
+    JOIN tb_topico_postagem tp ON DEREF(tp.postagem).titulo_da_postagem = DEREF(up.postagem).titulo_da_postagem
+    WHERE t.nome_do_topico = DEREF(tp.topico).nome_do_topico;
+
+
+-- Adiciona dois números de telefone e usa a MEMBER FUNCTION listar_numeros para printar os numeros adicionados
+DECLARE
+    telefones tp_varray_tp_telefone := tp_varray_tp_telefone(varray_tp_telefone(tp_telefone('8654987254'), tp_telefone('8265981239')));
+BEGIN
+    DBMS_OUTPUT.PUT_LINE('Telefones: ' || telefones.listar_numeros(telefones));
+END;

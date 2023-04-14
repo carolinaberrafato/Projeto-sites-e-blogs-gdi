@@ -19,25 +19,20 @@ CREATE OR REPLACE TYPE tp_telefone AS OBJECT (
 CREATE OR REPLACE TYPE varray_tp_telefone AS VARRAY(5) OF tp_telefone;
 /
 
-
+CREATE OR REPLACE TYPE tp_varray_tp_telefone AS OBJECT (
+    varray_telefone varray_tp_telefone,
+    MEMBER FUNCTION listar_numeros (SELF_OBJ IN tp_varray_tp_telefone) RETURN VARCHAR2
+)
+/
 -- Função que checa se há espaço disponível na varray_tp_telefone e, caso sim, insere um novo valor
 
-CREATE OR REPLACE TYPE BODY varray_tp_telefone AS
-    MEMBER FUNCTION adicionar_numero(num_tel VARCHAR2(11)) RETURN BOOLEAN IS
-    BEGIN
-        IF SELF.COUNT < SELF.LIMIT THEN
-            SELF(SELF.COUNT + 1) := num_tel;
-            RETURN TRUE;
-        ELSE
-            RETURN FALSE;
-        END IF;
-    END;
-    MEMBER FUNCTION listar_numeros RETURN VARCHAR2 AS
+CREATE OR REPLACE TYPE BODY tp_varray_tp_telefone AS
+    MEMBER FUNCTION listar_numeros (SELF_OBJ IN tp_varray_tp_telefone) RETURN VARCHAR2 IS
         v_numeros VARCHAR2(500);
     BEGIN
         v_numeros := '';
-        FOR i IN 1..self.COUNT LOOP
-            v_numeros := v_numeros || self(i).numero || ', ';
+        FOR i IN 1..self_obj.varray_telefone.COUNT LOOP
+            v_numeros := v_numeros || self_obj.varray_telefone(i).numero || ', ';
         END LOOP;
         -- Remove a última vírgula e espaço da string
         v_numeros := RTRIM(v_numeros, ', ');
@@ -137,14 +132,15 @@ CREATE OR REPLACE TYPE tp_seguidor AS OBJECT (
 CREATE OR REPLACE TYPE tp_acompanha AS OBJECT(
     usuario_associado REF tp_usuario,
     data_inicial DATE,
-    data_final DATE
+    data_final DATE,
+    ORDER MEMBER FUNCTION compara_tempo_acompanhamento (SELF IN OUT NOCOPY tp_acompanha, t tp_acompanha) RETURN NUMBER
 );
 /
 CREATE OR REPLACE TYPE tp_nt_acompanha AS TABLE OF tp_acompanha;
 /
 
 CREATE OR REPLACE TYPE BODY tp_acompanha AS
-    ORDER MEMBER FUNCTION compara_tempo_acompanhamento (SELF IN OUT NOCOPY tp_acompanha, t tp_acompanha) RETURN NUMBER
+    ORDER MEMBER FUNCTION compara_tempo_acompanhamento (SELF IN OUT NOCOPY tp_acompanha, t tp_acompanha) RETURN NUMBER IS
     BEGIN
         IF (SELF.data_final - SELF.data_inicial) >= t.data_final - t.data_inicial THEN
             RETURN (SELF.data_final - SELF.data_inicial);
