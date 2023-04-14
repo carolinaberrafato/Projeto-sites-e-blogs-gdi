@@ -23,3 +23,19 @@ FROM tb_usuario u
 JOIN TABLE(u.telefones) t ON 1=1
 ORDER BY u.nome, u.sobrenome;
 /
+
+-- TESTES DOS MÉTODOS (FUNCTIONS E PROCEDURES) -----------------------
+
+-- FINAL MAP MEMBER FUNCTION
+SELECT u.nome, u.email, t.numero, t.get_ddd() AS DDD
+FROM tb_usuario u, TABLE(u.telefones) t
+WHERE u.email = 'mariaf@example.com';
+/
+
+-- TESTES DAS TABELAS (CONSULTAS BÁSICAS) ----------------------------
+
+-- Resposta/Comentário
+SELECT C.id AS id_comentario, C.mensagem AS comentario, R.id_resposta, R.data_publicacao, R.mensagem AS resposta
+FROM tb_resposta R, tb_comentario C
+WHERE C.id = '1' AND R.id_comentario = REF(C);
+/

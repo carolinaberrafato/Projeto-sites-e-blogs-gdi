@@ -60,10 +60,10 @@ INSERT INTO tb_resposta (id_comentario, id_resposta, data_publicacao, mensagem)
 VALUES ((SELECT REF(c) FROM tb_comentario c WHERE c.id = '1'), '001', TO_DATE('01-04-2023', 'dd-mm-yyyy'), 'Obrigado pelo seu comentário!');
 
 INSERT INTO tb_resposta (id_comentario, id_resposta, data_publicacao, mensagem)
-VALUES ((SELECT REF(c) FROM tb_comentario c WHERE c.id = '2'), '002', TO_DATE('02-04-2023', 'dd-mm-yyyy'), 'Fico feliz que tenha gostado!');
+VALUES ((SELECT REF(c) FROM tb_comentario c WHERE c.id = '1'), '002', TO_DATE('02-04-2023', 'dd-mm-yyyy'), 'Fico feliz que tenha gostado!');
 
 INSERT INTO tb_resposta (id_comentario, id_resposta, data_publicacao, mensagem)
-VALUES ((SELECT REF(c) FROM tb_comentario c WHERE c.id = '3'), '003', TO_DATE('03-04-2023', 'dd-mm-yyyy'), 'Vamos verificar essa questão');
+VALUES ((SELECT REF(c) FROM tb_comentario c WHERE c.id = '1'), '003', TO_DATE('03-04-2023', 'dd-mm-yyyy'), 'Vamos verificar essa questão');
 
 INSERT INTO tb_resposta (id_comentario, id_resposta, data_publicacao, mensagem)
 VALUES ((SELECT REF(c) FROM tb_comentario c WHERE c.id = '4'), '004', TO_DATE('04-04-2023', 'dd-mm-yyyy'), 'Espero ter ajudado!');
