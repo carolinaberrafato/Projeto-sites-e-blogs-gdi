@@ -18,6 +18,26 @@ CREATE OR REPLACE TYPE BODY tp_telefone AS
         BEGIN
             RETURN SUBSTR(numero, 1, 2);
         END;
+CREATE OR REPLACE TYPE tp_varray_tp_telefone AS OBJECT (
+    varray_telefone varray_tp_telefone,
+    MEMBER FUNCTION listar_numeros (SELF_OBJ IN tp_varray_tp_telefone) RETURN VARCHAR2
+)
+/
+-- Função que checa se há espaço disponível na varray_tp_telefone e, caso sim, insere um novo valor
+
+CREATE OR REPLACE TYPE BODY tp_varray_tp_telefone AS
+    MEMBER FUNCTION listar_numeros (SELF_OBJ IN tp_varray_tp_telefone) RETURN VARCHAR2 IS
+        v_numeros VARCHAR2(500);
+    BEGIN
+        v_numeros := '';
+        FOR i IN 1..self_obj.varray_telefone.COUNT LOOP
+            v_numeros := v_numeros || self_obj.varray_telefone(i).numero || ', ';
+        END LOOP;
+        -- Remove a última vírgula e espaço da string
+        v_numeros := RTRIM(v_numeros, ', ');
+
+        RETURN v_numeros;
+    END listar_numeros;
 END;
 /
 
@@ -29,7 +49,7 @@ CREATE OR REPLACE TYPE tp_perfil AS OBJECT (
     sobrenome VARCHAR2(255),
     data_nasc DATE,
     telefones varray_tp_telefone,
-    MEMBER PROCEDURE mostrar_info
+    MEMBER PROCEDURE mostrar_info  (SELF tp_perfil)
 ) NOT FINAL NOT INSTANTIABLE;
 /
 
@@ -38,8 +58,17 @@ CREATE OR REPLACE TYPE tp_perfil AS OBJECT (
 CREATE OR REPLACE TYPE tp_usuario UNDER tp_perfil (
     num_postagens NUMBER,
     data_assinatura DATE,
-    OVERRIDING MEMBER PROCEDURE mostrar_info,
-    CONSTRUCTOR FUNCTION tp_usuario(x1 tp_usuario) RETURN SELF AS RESULT
+    OVERRIDING MEMBER PROCEDURE mostrar_info ( SELF tp_usuario),
+    CONSTRUCTOR FUNCTION tp_usuario(
+        p_email VARCHAR2,
+        p_nome VARCHAR2,
+        p_sobrenome VARCHAR2,
+        p_data_nasc DATE,
+        p_data_cad DATE,
+        p_telefones varray_tp_telefone,
+        p_num_postagens NUMBER,
+        p_data_assinatura DATE
+    ) RETURN SELF AS RESULT
 );
 /
 
@@ -55,29 +84,38 @@ ALTER TYPE tp_perfil ADD ATTRIBUTE (
 ) CASCADE;
 
 CREATE OR REPLACE TYPE BODY tp_usuario AS 
-    OVERRIDING MEMBER PROCEDURE mostrar_info IS  
-        BEGIN 
+    OVERRIDING MEMBER PROCEDURE mostrar_info ( SELF tp_usuario) IS
+    BEGIN 
             DBMS_OUTPUT.PUT_LINE(email); 
             DBMS_OUTPUT.PUT_LINE(nome); 
             DBMS_OUTPUT.PUT_LINE(sobrenome); 
 			DBMS_OUTPUT.PUT_LINE(data_nasc); 
 			DBMS_OUTPUT.PUT_LINE(data_cad); 
-			DBMS_OUTPUT.PUT_LINE(telefones); 
 			DBMS_OUTPUT.PUT_LINE(num_postagens); 
 			DBMS_OUTPUT.PUT_LINE(data_assinatura); 
         END; 
-    CONSTRUCTOR FUNCTION tp_cliente (x1 tp_usuario) RETURN SELF AS RESULT IS 
-        BEGIN 
-            email := x1.email; 
-            nome := x1.nome; 
-            sobrenome := x1.sobrenome; 
-            data_nasc := x1.data_nasc; 
-            data_cad := x1.data_cad; 
-            telefones := x1.telefones; 
-            num_postagens := x1.num_postagens; 
-            data_assinatura := x1.data_assinatura; 
-            RETURN; 
-        END; 
+
+    CONSTRUCTOR FUNCTION tp_usuario(
+        p_email VARCHAR2,
+        p_nome VARCHAR2,
+        p_sobrenome VARCHAR2,
+        p_data_nasc DATE,
+        p_data_cad DATE,
+        p_telefones varray_tp_telefone,
+        p_num_postagens NUMBER,
+        p_data_assinatura DATE
+    ) RETURN SELF AS RESULT IS
+    BEGIN 
+        email := p_email; 
+        nome := p_nome; 
+        sobrenome := p_sobrenome; 
+        data_nasc := p_data_nasc; 
+        data_cad := p_data_cad; 
+        telefones := p_telefones; 
+        num_postagens := p_num_postagens; 
+        data_assinatura := p_data_assinatura; 
+        RETURN; 
+    END;  
 END;
 /
 
@@ -93,14 +131,15 @@ CREATE OR REPLACE TYPE tp_seguidor AS OBJECT (
 CREATE OR REPLACE TYPE tp_acompanha AS OBJECT(
     usuario_associado REF tp_usuario,
     data_inicial DATE,
-    data_final DATE
+    data_final DATE,
+    ORDER MEMBER FUNCTION compara_tempo_acompanhamento (SELF IN OUT NOCOPY tp_acompanha, t tp_acompanha) RETURN NUMBER
 );
 /
 CREATE OR REPLACE TYPE tp_nt_acompanha AS TABLE OF tp_acompanha;
 /
 
 CREATE OR REPLACE TYPE BODY tp_acompanha AS
-    ORDER MEMBER FUNCTION compara_tempo_acompanhamento (SELF IN OUT NOCOPY tp_acompanha, t tp_acompanha) RETURN NUMBER
+    ORDER MEMBER FUNCTION compara_tempo_acompanhamento (SELF IN OUT NOCOPY tp_acompanha, t tp_acompanha) RETURN NUMBER IS
     BEGIN
         IF (SELF.data_final - SELF.data_inicial) >= t.data_final - t.data_inicial THEN
             RETURN (SELF.data_final - SELF.data_inicial);
